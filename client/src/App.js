@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import './App.css';
 import Customer from './components/Customer'
 import Paper from '@material-ui/core/Paper'
@@ -22,30 +22,44 @@ const styles = theme => ({
 })
 
 function App() {
-  const customers = [{
-  id: 1,
-  image: 'https://placeimg.com/64/64/1',
-  name: '나동빈',
-  birthday: '961222',
-  gender: '남자',
-  job: '대학생'
-},
-{
-  id: 2,
-  image: 'https://placeimg.com/64/64/2',
-  name: '홍길동',
-  birthday: '941222',
-  gender: '남자',
-  job: '백수'
-},
-{
-  id: 3,
-  image: 'https://placeimg.com/64/64/3',
-  name: '김만두',
-  birthday: '482920',
-  gender: '여자',
-  job: '코더'
-}]
+//   const customers = [{
+//   id: 1,
+//   image: 'https://placeimg.com/64/64/1',
+//   name: '나동빈',
+//   birthday: '961222',
+//   gender: '남자',
+//   job: '대학생'
+// },
+// {
+//   id: 2,
+//   image: 'https://placeimg.com/64/64/2',
+//   name: '홍길동',
+//   birthday: '941222',
+//   gender: '남자',
+//   job: '백수'
+// },
+// {
+//   id: 3,
+//   image: 'https://placeimg.com/64/64/3',
+//   name: '김만두',
+//   birthday: '482920',
+//   gender: '여자',
+//   job: '코더'
+// }]
+
+  const [customers, setCustomers] = useState("")
+
+  useEffect(() => {
+    callApi()
+      .then(res => setCustomers(res))
+      .catch(err => console.log(err));
+  }, [])
+
+  const callApi = async () => {
+    const response =await fetch('/api/customers');
+    const body = await response.json();
+    return body
+  }
 
   return (
     <Paper>
@@ -61,7 +75,8 @@ function App() {
           </TableRow>
         </TableHead>
         <TableBody>
-        {
+        { customers ?      // rendered before get response
+          // console.log(customers)
           customers.map((customer) => {
             return <Customer 
                       key={customer.id} 
@@ -72,6 +87,7 @@ function App() {
                       gender={customer.gender}
                       job={customer.job} />
           })
+          : ""
         }
         </TableBody>
       </Table>
