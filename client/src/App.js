@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import './App.css';
 import Customer from './components/Customer'
 import Paper from '@material-ui/core/Paper'
@@ -9,6 +9,8 @@ import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 import { withStyles } from '@material-ui/core/styles'
 // import classes from '*.module.css';
+import CircularProgress from '@material-ui/core/CircularProgress'
+
 
 const styles = theme => ({
   root: {
@@ -18,6 +20,9 @@ const styles = theme => ({
   },
   table: {
     minWidth: 1080
+  },
+  progress: {
+    margin: theme.spacing.unit * 2
   }
 })
 
@@ -48,8 +53,11 @@ function App() {
 // }]
 
   const [customers, setCustomers] = useState("")
+  const [completed, setCompleted] = useState(0)
+  
 
   useEffect(() => {
+    const timer = setInterval(progress, 20);
     callApi()
       .then(res => setCustomers(res))
       .catch(err => console.log(err));
@@ -59,6 +67,10 @@ function App() {
     const response =await fetch('/api/customers');
     const body = await response.json();
     return body
+  }
+
+  const progress = () => {
+    setCompleted(completed >= 100 ? 0 : completed + 1)
   }
 
   return (
@@ -87,7 +99,12 @@ function App() {
                       gender={customer.gender}
                       job={customer.job} />
           })
-          : ""
+          :
+          <TableRow>
+            <TableCell colSpan="6" align="center">
+              <CircularProgress variant="determinate" value={completed} />
+            </TableCell>
+          </TableRow>
         }
         </TableBody>
       </Table>
