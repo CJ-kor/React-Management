@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CustomerAdd from './components/CustomerAdd';
 import './App.css';
 import Customer from './components/Customer'
@@ -27,7 +27,7 @@ const styles = theme => ({
   }
 })
 
-function App() {
+function App({classes}) {
 //   const customers = [{
 //   id: 1,
 //   image: 'https://placeimg.com/64/64/1',
