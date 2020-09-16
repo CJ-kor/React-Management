@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import CustomerAdd from './components/CustomerAdd';
 import './App.css';
 import Customer from './components/Customer'
 import Paper from '@material-ui/core/Paper'
@@ -55,6 +56,13 @@ function App() {
   const [customers, setCustomers] = useState("")
   const [completed, setCompleted] = useState(0)
   
+  const stateRefresh = () => {
+      setCustomers("");
+      setCompleted(0);
+      callApi()
+      .then(res => setCustomers(res))
+      .catch(err => console.log(err));
+   }
 
   useEffect(() => {
     const timer = setInterval(progress, 20);
@@ -74,6 +82,7 @@ function App() {
   }
 
   return (
+    <>
     <Paper>
       <Table>
         <TableHead>
@@ -108,7 +117,9 @@ function App() {
         }
         </TableBody>
       </Table>
-    </Paper> 
+    </Paper>
+    <CustomerAdd stateRefresh={stateRefresh} />
+    </> 
   );
 }
 
