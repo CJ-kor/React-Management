@@ -1,9 +1,10 @@
 import React from 'react';
+import CustomerDelete from './CustomerDelete';
 import TableRow from '@material-ui/core/TableRow'
 import TableCell from '@material-ui/core/TableCell'
 
 
-function Customer({ id, image, name, birthday, gender, job }) {
+function Customer({ id, image, name, birthday, gender, job, stateRefresh }) {
    return (
       <div>
          <TableRow>
@@ -13,6 +14,7 @@ function Customer({ id, image, name, birthday, gender, job }) {
             <TableCell>{birthday}</TableCell>
             <TableCell>{gender}</TableCell>
             <TableCell>{job}</TableCell>
+            <TableCell><CustomerDelete stateRefresh={stateRefresh} id={id} /></TableCell>
          </TableRow>
       </div>
    );
